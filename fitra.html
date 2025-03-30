@@ -1,1 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitra Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #f1f1f1;
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <a class="text-white text-lg font-semibold" href="#">Fitra Calculator</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto mt-12 px-6 sm:px-12 md:px-24 lg:px-32">
+        <div class="bg-white p-8 rounded-lg shadow-xl">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Fitra Calculator</h2>
+
+            <!-- Price of Rice -->
+            <div class="mb-6">
+                <label for="ricePrice" class="block text-lg font-semibold text-gray-600">Price of 1 kg of Rice (LKR)</label>
+                <input type="number" id="ricePrice" class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter price of 1 kg of rice" />
+            </div>
+
+            <!-- Number of Family Members -->
+            <div class="mb-6">
+                <label for="familyMembers" class="block text-lg font-semibold text-gray-600">Number of Family Members</label>
+                <input type="number" id="familyMembers" class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter number of family members" />
+            </div>
+
+            <!-- Calculate Button -->
+            <button class="w-full py-3 px-6 bg-blue-500 text-white text-lg font-semibold rounded-md hover:bg-blue-600 focus:outline-none" onclick="calculateFitra()">Calculate Fitra</button>
+
+            <!-- Result -->
+            <div class="mt-6 p-4 bg-gray-100 rounded-md text-xl text-blue-600 font-semibold" id="result"></div>
+        </div>
+    </div>
+
+    <script>
+        function calculateFitra() {
+            const ricePrice = parseFloat(document.getElementById("ricePrice").value) || 0;
+            const familyMembers = parseInt(document.getElementById("familyMembers").value) || 0;
+
+            if (ricePrice > 0 && familyMembers > 0) {
+                const fitraPerPerson = 2.5; // 2.5 kg of rice per person
+                const totalRiceRequired = fitraPerPerson * familyMembers; // Total rice required for the family in kg
+                const totalFitra = totalRiceRequired * ricePrice; // Total Fitra payable in LKR
+                
+                document.getElementById("result").innerHTML = `Total Fitra payable: LKR ${totalFitra.toFixed(2)} (Equivalent to ${totalRiceRequired} kg of rice)`;
+            } else {
+                document.getElementById("result").innerHTML = "Please enter valid values for price and family members.";
+            }
+        }
+    </script>
+</body>
+</html>
 
