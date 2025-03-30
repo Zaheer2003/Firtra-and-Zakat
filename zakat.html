@@ -1,1 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zakat Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Navbar -->
+    <nav class="navbar bg-light shadow-sm p-4">
+        <div class="container flex justify-between items-center">
+            <a class="navbar-brand text-xl font-semibold" href="#">Zakat Calculator</a>
+            <div class="space-x-4">
+                <a class="text-lg text-gray-700 hover:text-gray-900" href="#">Home</a>
+                <a class="text-lg text-gray-700 hover:text-gray-900" href="#">About</a>
+                <a class="text-lg text-gray-700 hover:text-gray-900" href="#">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container max-w-lg mx-auto bg-white p-8 rounded-lg shadow-lg mt-10">
+        <h2 class="text-2xl font-bold text-center text-gray-700 mb-6" id="title">Zakat Calculator</h2>
+        
+        <!-- Language Selector -->
+        <div class="mb-4">
+            <label for="language" class="block text-lg font-medium text-gray-700">Select Language</label>
+            <select id="language" class="form-select w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" onchange="changeLanguage()">
+                <option value="en">English</option>
+                <option value="ta">தமிழ்</option>
+                <option value="si">සිංහල</option>
+            </select>
+        </div>
+
+        <!-- Savings Input -->
+        <div class="mb-4">
+            <label for="savings" class="block text-lg font-medium text-gray-700" id="savings-label">Total Savings (LKR)</label>
+            <input type="number" id="savings" class="w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter total savings">
+        </div>
+
+        <!-- Gold Input -->
+        <div class="mb-4">
+            <label for="gold" class="block text-lg font-medium text-gray-700" id="gold-label">Value of Gold/Silver (LKR)</label>
+            <input type="number" id="gold" class="w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter value of gold/silver">
+        </div>
+
+        <!-- Debt Input -->
+        <div class="mb-6">
+            <label for="debt" class="block text-lg font-medium text-gray-700" id="debt-label">Outstanding Debts (LKR)</label>
+            <input type="number" id="debt" class="w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter total debts">
+        </div>
+
+        <!-- Calculate Button -->
+        <button class="w-full bg-blue-500 text-white p-3 rounded-lg text-xl font-medium hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" onclick="calculateZakat()" id="calculate-btn">Calculate Zakat</button>
+
+        <!-- Result Section -->
+        <h4 class="mt-6 text-xl font-semibold text-center text-gray-700" id="result"></h4>
+    </div>
+
+    <script>
+        const translations = {
+            en: {
+                title: "Zakat Calculator",
+                savingsLabel: "Total Savings (LKR)",
+                goldLabel: "Value of Gold/Silver (LKR)",
+                debtLabel: "Outstanding Debts (LKR)",
+                calculateBtn: "Calculate Zakat",
+                notRequired: "You are not required to pay Zakat.",
+                zakatPayable: "Zakat Payable: LKR "
+            },
+            ta: {
+                title: "ஜக்காத் கணிப்பான்",
+                savingsLabel: "மொத்த சேமிப்பு (LKR)",
+                goldLabel: "தங்கம்/வெள்ளியின் மதிப்பு (LKR)",
+                debtLabel: "நிலுவை கடன் (LKR)",
+                calculateBtn: "ஜக்காத் கணிக்கவும்",
+                notRequired: "நீங்கள் ஜக்காத் செலுத்த வேண்டியதில்லை.",
+                zakatPayable: "ஜக்காத் செலுத்த வேண்டிய தொகை: LKR "
+            },
+            si: {
+                title: "සකත් ගණනය කිරීම",
+                savingsLabel: "මුළු ඉතිරිකිරීම් (LKR)",
+                goldLabel: "රන්/රන්ගලගේ වටිනාකම (LKR)",
+                debtLabel: "නිෂ්කලංක ණය (LKR)",
+                calculateBtn: "සකත් ගණනය කරන්න",
+                notRequired: "ඔබ සකත් ගෙවීම අනිවාර්ය නැත.",
+                zakatPayable: "ගෙවිය යුතු සකත් මුදල: LKR "
+            }
+        };
+
+        function changeLanguage() {
+            let lang = document.getElementById("language").value;
+            document.getElementById("title").innerText = translations[lang].title;
+            document.getElementById("savings-label").innerText = translations[lang].savingsLabel;
+            document.getElementById("gold-label").innerText = translations[lang].goldLabel;
+            document.getElementById("debt-label").innerText = translations[lang].debtLabel;
+            document.getElementById("calculate-btn").innerText = translations[lang].calculateBtn;
+        }
+
+        function calculateZakat() {
+            let savings = parseFloat(document.getElementById("savings").value) || 0;
+            let gold = parseFloat(document.getElementById("gold").value) || 0;
+            let debt = parseFloat(document.getElementById("debt").value) || 0;
+            
+            let netWealth = savings + gold - debt;
+            let nisab = 850000; // Approximate Nisab value in LKR (varies)
+            let lang = document.getElementById("language").value;
+            
+            if (netWealth >= nisab) {
+                let zakat = netWealth * 0.025;
+                document.getElementById("result").innerHTML = translations[lang].zakatPayable + zakat.toFixed(2);
+            } else {
+                document.getElementById("result").innerHTML = translations[lang].notRequired;
+            }
+        }
+    </script>
+
+</body>
+</html>
 
